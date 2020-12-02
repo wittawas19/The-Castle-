@@ -51,8 +51,6 @@ void player::update(float deltaTime ,weapon *weapon)
 	if (row == 3 && movement.y == 0) row = 2;
 	if (row == 5 && movement.x == 0) row = 4;
 	if (row == 7 && movement.x == 0) row = 6;
-	
-	
 
 	cout << "HpPlayer = " << HpPlayer << endl;
 	animation.update(row, deltaTime);

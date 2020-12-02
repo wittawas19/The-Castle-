@@ -27,8 +27,8 @@ int main()
 
 	Texture weapon1;
 	weapon1.loadFromFile("sword.png");
-	weapon weapon(&weapon1,Vector2f (10.0f,5.0f),Vector2u(6,2), 1 ,player.getPosition() );
-
+	weapon weaponPlayer(&weapon1,Vector2u(6 , 2), 0.07f , Vector2f(0.0f,0.0f));
+	weaponPlayer.setPositon(player.getPosition()); 
 
 
 	Texture fireball;
@@ -101,9 +101,9 @@ int main()
 					if (evt.type == Event::KeyPressed && evt.key.code == Keyboard::Escape) window.close();
 				}
 
-				player.update(deltaTime,&weapon);
-				enemy1.updateEnemyFollow(enemy1.getPosition(), player.getPosition(), deltaTime ,weapon.getBounds());
-				
+				player.update(deltaTime,&weaponPlayer);
+				enemy1.updateEnemyFollow(enemy1.getPosition(), player.getPosition(), deltaTime ,weaponPlayer.getBounds());
+				weaponPlayer.update(deltaTime , player.getPosition());
 				//cout << "Hp = " << Hp << endl;
 				//cout << "x = " << player.getPosition().x << " y = " << player.getPosition().y << std::endl;
 				//cout << "Enemy x = " << enemy1.getPosition().x << "Enemy y = " << enemy1.getPosition().y << endl;
@@ -124,15 +124,15 @@ int main()
 						enemy1.takeDamage(enemy1.getDamage());
 				}*/
 				if (player.getGlobals().intersects(enemy1.getGlobals())) {	player.takeDamage(10);}
-				if (enemy1.getGlobals().intersects(weapon.getBounds()))  {  enemy1.takeDamage(10); }; 
+				if (enemy1.getGlobals().intersects(weaponPlayer.getBounds()))  {  enemy1.takeDamage(10); }; 
 					view.setCenter(player.getPosition());
 					
 					window.clear();
 					window.setView(view);
 					
-					weapon.draw(window);
-					background1.draw(window);
 					
+					background1.draw(window);
+					weaponPlayer.draw(window);
 					player.draw(window);
 					enemy1.draw(window);
 					if (player.getPosition().x >= 1200.f && player.getPosition().x <= 1320.f && player.getPosition().y >= 1990.f && player.getPosition().y <= 2080.f)
@@ -188,7 +188,7 @@ int main()
 							if (evt.type == Event::KeyPressed && evt.key.code == Keyboard::Escape) window.close();
 						}
 
-						player.update(deltaTime  ,&weapon);
+						player.update(deltaTime  ,&weaponPlayer);
 						cout << "x = " << player.getPosition().x << " y = " << player.getPosition().y << std::endl;
 						cout << deltaTime << endl;
 						collider playerCollision = player.getCollider();
